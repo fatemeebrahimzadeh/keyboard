@@ -1,0 +1,61 @@
+.keyboard {
+    top: 45px;
+    transform: scale(0);
+    z-index: 1506;
+    position: absolute;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    width: 500px;
+    border-radius: 5px;
+    background-color: rgba($color: black, $alpha: 0.7);
+    color: #e2e2e0;
+    border: 1px solid rgba($color: #e2e2e0, $alpha: 0.5);
+    transition: transform linear 0.1s;
+    transform: scale(1);
+
+    .simple-keyboard {
+        max-width: 850px;
+    }
+
+    .hg-theme-default {
+        background-color: rgba($color: #e2e2e0, $alpha: 0) !important;
+    }
+
+    .keyboard__header {
+        display: flex;
+        justify-content: flex-end;
+        margin: 5px;
+        cursor: move;
+
+        svg {
+            cursor: pointer !important;
+        }
+    }
+
+    .simple-keyboard.hg-layout-default .hg-button.hg-button--blue,
+    .simple-keyboard.hg-layout-shift .hg-button.hg-button--blue {
+        background: #1b6acb;
+        color: #e2e2e0;
+    }
+
+    .simple-keyboard.hg-layout-default .hg-button,
+    .simple-keyboard.hg-layout-shift .hg-button {
+        background: #373737;
+        color: #e2e2e0;
+        border: 1px solid rgba($color: #e2e2e0, $alpha: 0.5);
+
+        &:hover {
+            background-color: #686868;
+            color: white;
+        }
+
+        &:active {
+            transform: scale(0.989);
+        }
+    }
+}
+
+.keyboard--visible {
+    transform: scale(1);
+    visibility: visible;
+}
