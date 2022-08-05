@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Keyboard from "react-simple-keyboard";
-// import { faTimes } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import CloseIcon from '@mui/icons-material/Close';
 import "./CustomKeyboard.scss"
 import "react-simple-keyboard/build/css/index.css";
 import { KeyboardSingleton } from "./Keyboard";
@@ -20,6 +18,7 @@ interface IState {
     layoutName: string
     input: string
     mountedClientX: Number
+    mountedClientY: Number
 }
 
 class CustomKeyboard extends Component<IProps, IState> {
@@ -41,14 +40,16 @@ class CustomKeyboard extends Component<IProps, IState> {
     componentDidMount() {
         this.mounted = true
         this.setState({
-            mountedClientX: this.props.keyContainerDetails!.x + this.props.keyContainerDetails!.width / 2 - 450
+            mountedClientX: this.props.keyContainerDetails!.x + this.props.keyContainerDetails!.width / 2 - 450,
+            mountedClientY: this.props.keyContainerDetails!.y + 40
         })
     }
 
     state = {
         layoutName: "default",
         input: "",
-        mountedClientX: 0
+        mountedClientX: 0,
+        mountedClientY: 0
     };
 
     onChange = (input: string) => {
@@ -85,13 +86,10 @@ class CustomKeyboard extends Component<IProps, IState> {
         return (
             <div
                 ref={this.dragReference}
-                style={{ left: this.state.mountedClientX + "px" }}
+                style={{ left: this.state.mountedClientX + "px", top: this.state.mountedClientY + "px" }}
                 className={`keyboard ${this.attendedClass}`}>
                 <header onMouseDown={this.dragMouseDown} className="keyboard__header">
-                    {/* {this.props.onKeyboardCloseIconClickHandler && <FontAwesomeIcon
-                        onClick={this.props.onKeyboardCloseIconClickHandler}
-                        icon={faTimes}
-                    />} */}
+                    {this.props.onKeyboardCloseIconClickHandler && <CloseIcon onClick={this.props.onKeyboardCloseIconClickHandler} />}
                 </header>
                 <Keyboard
                     keyboardRef={r => (this.keyboardRef = r)}

@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MOUNT_KEYBOARD } from './@types/events';
 import './App.css';
 import { KeyboardSingleton } from './CustomKeyboard/Keyboard';
 import TextArea, { ITextAreaValidationRules } from './TextArea/TextArea';
 import { GlobalEvent } from './utils/event-emitter';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
+import useBoolean from './useBoolean/useBoolean';
+import CustomKeyboard from './CustomKeyboard/CustomKeyboard';
 
 function App() {
 
@@ -25,20 +28,41 @@ function App() {
     return () => {
       GlobalEvent.get().unsubscribe(MOUNT_KEYBOARD, KeyboardSingleton.clear)
     }
-  })
+  }, [])
+
+  const [keyboardVisibility,
+    setKeyboardVisibility,
+    setTrueKeyboardVisibility,
+    setFalseKeyboardVisibility,
+    toggleKeyboardVisibility] = useBoolean(false)
+
+  const keyContainerRef = useRef<HTMLButtonElement>(null)
 
   //#endregion
 
   return (
-    <div className="App">
-      <TextArea
-        onFocus={() => { keyboard.onChangeHandlerCallBackSetter = (value) => setTextArea(value) }}
-        value={textArea}
-        onChange={setTextArea}
-        validation={validationRuls}
-        groupName="textArea"
-      />
-    </div>
+    <>
+      <div className="App">
+        <div className='container'>
+          <TextArea
+            onFocus={() => { keyboard.onChangeHandlerCallBackSetter = (value) => setTextArea(value) }}
+            value={textArea}
+            onChange={setTextArea}
+            validation={validationRuls}
+            groupName="textArea"
+          />
+          <button ref={keyContainerRef} onClick={toggleKeyboardVisibility}>
+            <KeyboardIcon />
+          </button>
+          {keyboardVisibility && <CustomKeyboard
+            onKeyboardCloseIconClickHandler={setFalseKeyboardVisibility}
+            visibility={keyboardVisibility}
+            keyContainerDetails={keyContainerRef.current?.getBoundingClientRect()}
+          />}
+        </div>
+      </div>
+      <p>open the keyboard first, then focus on textArea</p>
+    </>
   );
 }
 
